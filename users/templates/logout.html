@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <title>Logout-page</title>
+</head>
+<body>
+    <form method="post" action="{% url 'login' %}">
+        <h2 style="padding-left:35%;padding-top:100px;"><q>Thank you for visiting&#10084;&#65039;</q></h2>
+        <cite style="padding-left:57%;">- surajit</cite><br>
+        {% csrf_token %}
+        {{ form }}
+        <a href="{% url 'login' %}"><button type="submit" style="width:180px;margin-left:41%">Login Again</button></a>
+    </form>
+</body>
+</html>

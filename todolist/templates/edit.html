@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% if task_obj.owner == user %}
+    <form method="post">
+        {% csrf_token %}
+        <div style="width:700px; margin-left:30px;">
+            <input type="text" name="task" placeholder="{{task_obj.task}}" value="{{task_obj.task}}" aria-label="Text">
+            <input type="hidden" name="is_completed" value="{{task_obj.is_completed}}">
+            <button>Update task</button>
+        </div>
+    </form>
+{% else %}
+    <h3>You are not authorized to edit this task.</h3>
+{% endif %}
+{% endblock %}

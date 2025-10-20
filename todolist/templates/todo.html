@@ -1,0 +1,71 @@
+{%extends "base.html"%}
+
+{%block import %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}" style="background-color: rgb(54, 205, 92);color:rgb(3, 23, 50);">
+        {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <!-- {% for task in all_tasks %}
+        &nbsp&nbsp{{ task.task }} - {{task.is_completed}}<br><br>
+    {% endfor %} -->
+    <br>
+    <form method="post">
+    {% csrf_token %}
+    <div style="width:700px; margin-left:30px;">
+        <input type="text" name="task" placeholder="Text" aria-label="Text">
+        <button>Add Task</button>
+    </div>
+    </form>
+
+{% endblock %}
+
+{% block todo_table %}
+    <table class="striped">
+    <thead>
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Status</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in all_tasks %}
+            {% if task.is_completed %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}. {{ task.task }}</th>
+                    <td><a href="{% url 'pending_task' task.id %}"><button class="secondary" disabled>Mark as Pending</button></a></td>
+                    <td><a href="{%url 'delete_task' task.id %}"><button class="secondary">delete</button></a></td>
+                    <td><a href="{%url 'edit_task' task.id %}"><button class="secondary">edit</button></a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}. {{ task.task }}</th>
+                    <td><a href="{% url 'complete_task' task.id %}"><button>Mark as Completed</button></a></td>
+                    <td><a href="{%url 'delete_task' task.id %}"><button class="secondary">delete</button></a></td>
+                    <td><a href="{%url 'edit_task' task.id %}"><button class="secondary">edit</button></a></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+    </table>
+    <nav>
+    <ul><li><strong>pages--></strong></li></ul>
+    <ul>
+        <li><a href="?page=1"><<</a></li>
+        {% if all_tasks.has_previous %}
+            <li><a href="?page={{all_tasks.previous_page_number}}">{{all_tasks.previous_page_number}}</a></li>
+        {% endif %}
+            <li><a href="?page={{all_tasks.number}}">{{all_tasks.number}}</a></li>
+        {% if all_tasks.has_next %}
+            <li><a href="?page={{all_tasks.next_page_number}}">></a></li>
+        {% endif %}
+        <li><a href="?page={{all_tasks.paginator.num_pages}}">>></a></li>
+    </ul>
+</nav>
+{% endblock %}
